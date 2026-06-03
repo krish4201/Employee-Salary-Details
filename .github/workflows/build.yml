@@ -35,6 +35,9 @@ jobs:
       - name: Verify CF CLI
         run: cf version
 
+      - name: CF CLI API Endpoint
+        run: cf api https://api.cf.ap21.hana.ondemand.com
+
       - name: CF CLI Login
         run: cf auth rkkramesh2001@gmail.com Rkk_@2001
 
