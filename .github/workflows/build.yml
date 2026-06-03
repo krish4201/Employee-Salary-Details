@@ -69,4 +69,4 @@ jobs:
 
 
       - name: Deploy MTA
-        run: cf deploy mta_archives/*.mtar
+        run: cf deploy mta_archives/*.mtar --forceOpt true
