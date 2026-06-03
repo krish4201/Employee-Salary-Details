@@ -1,68 +1,48 @@
-_schema-version: "3.3"
-ID: empsaldetails-management
-version: 1.0.0
+name: Build and Deploy CAP App
 
-parameters:
-  enable-parallel-deployments: true      
+on:
+  push:
+    branches:
+      - main
 
-build-parameters:
-  before-all:
-    - builder: custom
-      commands:
-        - npm install
-        - npx cds build --production
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-modules:
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-  - name: empsaldetails-srv
-    type: nodejs
-    path: gen/srv
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-    parameters:
-      memory: 512M
-      disk-quota: 512M
+      - name: Install dependencies
+        run: npm install
 
-    provides:
-      - name: srv-api
-        properties:
-          srv-url: ${default-url}
+      - name: Build CAP project
+        run: npx cds build --production
 
-    requires:
-      - name: empsaldetails-db
-      - name: empsaldetails-xsuaa
-      - name: empsaldetails-destination
+      - name: Install MBT
+        run: npm install -g mbt
 
-    build-parameters:
-      builder: npm-ci
+      - name: Build MTA archive
+        run: mbt build -p=cf -t=.
 
-  - name: empsaldetails-db-deployer
-    type: hdb
+      # Optional: Deploy to SAP BTP (Cloud Foundry)
+      # Requires secrets configured in GitHub
+      - name: Install CF CLI
+        run: |
+          wget https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github -O cf.tgz
+          tar -xvf cf.tgz
+          sudo mv cf /usr/local/bin
 
-    path: gen/db
+      - name: Login to CF
+        run: |
+          cf api ${{ secrets.CF_API }}
+          cf auth ${{ secrets.CF_USER }} ${{ secrets.CF_PASSWORD }}
+          cf target -o ${{ secrets.CF_ORG }} -s ${{ secrets.CF_SPACE }}
 
-    requires:
-      - name: empsaldetails-db
-
-resources:
-
-  - name: empsaldetails-db
-    type: com.sap.xs.hdi-container
-
-    parameters:
-      service: hana
-      service-plan: hdi-shared
-
-  - name: empsaldetails-xsuaa
-    type: org.cloudfoundry.managed-service
-
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: xs-security.json
-
-  - name: employee-destination
-    type: org.cloudfoundry.managed-service
-
-    parameters:
-      service: destination
-      service-plan: lite
+      - name: Deploy MTA
+        run: cf deploy mta_archives/*.mtar
