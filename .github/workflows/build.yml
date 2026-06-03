@@ -18,6 +18,11 @@ jobs:
         with:
           node-version: 18
 
+      - name: Login to CF
+        run: |
+          cf api https://api.cf.ap21.hana.ondemand.com
+          cf auth rkkramesh2001@gmail.com Rkk_@2001
+
       - name: Install dependencies
         run: npm install
 
@@ -26,6 +31,8 @@ jobs:
 
       - name: Install MBT
         run: npm install -g mbt
+      
+
 
       - name: Build MTA archive
         run: mbt build
@@ -38,10 +45,6 @@ jobs:
           tar -xvf cf.tgz
           sudo mv cf /usr/local/bin
 
-      - name: Login to CF
-        run: |
-          cf api https://api.cf.ap21.hana.ondemand.com
-          cf auth rkkramesh2001@gmail.com Rkk_@2001
 
       - name: Deploy MTA
         run: cf deploy mta_archives/*.mtar
