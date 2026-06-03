@@ -20,7 +20,7 @@ jobs:
 
       
       - name: Install CF CLI
-        uses: cloudfoundry/cf-cli-action@8
+        uses: cloudfoundry/cf-cli@8
       
       - name: Verify CF CLI
         run: cf version
