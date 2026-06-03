@@ -54,19 +54,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # - name: Build CAP project
-      #   run: npx cds build --production
-
       - name: Install MBT
         run: npm install -g mbt
 
-
       - name: Build MTA archive
         run: mbt build
-
-      # Optional: Deploy to SAP BTP (Cloud Foundry)
-      # Requires secrets configured in GitHub
-
 
       - name: Deploy MTA
         run: cf deploy mta_archives/*.mtar -f
