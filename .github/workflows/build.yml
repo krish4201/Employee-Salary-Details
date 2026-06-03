@@ -18,8 +18,13 @@ jobs:
         with:
           node-version: 18
 
+     
       - name: Install CF CLI
-        uses: cloudfoundry/cf-cli-action@v2
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cf-cli
+          cf version
+
 
       - name: Login to CF
         run: |
