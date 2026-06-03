@@ -18,12 +18,12 @@ jobs:
         with:
           node-version: 18
 
-     
       
       - name: Install CF CLI
-        run: |
-          cf version
-
+        uses: cloudfoundry/cf-cli-action@8
+      
+      - name: Verify CF CLI
+        run: cf version
 
 
       - name: Login to CF
