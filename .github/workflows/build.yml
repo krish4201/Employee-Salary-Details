@@ -18,6 +18,12 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install CF CLI
+        run: |
+          wget https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github -O cf.tgz
+          tar -xvf cf.tgz
+          sudo mv cf /usr/local/bin
+
       - name: Login to CF
         run: |
           cf api https://api.cf.ap21.hana.ondemand.com
@@ -39,11 +45,6 @@ jobs:
 
       # Optional: Deploy to SAP BTP (Cloud Foundry)
       # Requires secrets configured in GitHub
-      - name: Install CF CLI
-        run: |
-          wget https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github -O cf.tgz
-          tar -xvf cf.tgz
-          sudo mv cf /usr/local/bin
 
 
       - name: Deploy MTA
