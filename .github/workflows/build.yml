@@ -20,12 +20,6 @@ jobs:
 
       - name: Setup Cloud Foundry CLI
         uses: vchrisb/setup-cf@v3
-        with:
-          api: "https://api.cf.ap21.hana.ondemand.com"
-          username: "rkkramesh2001@gmail.com"
-          password: "Rkk_@2001"
-          org: "abb7905ftrial"
-          space: "dev"
     
       - name: Verify CF CLI
         run: cf version
