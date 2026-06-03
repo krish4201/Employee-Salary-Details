@@ -17,9 +17,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - name: Sap BTP CF CLI Action - Build and Deploy
-        uses: CUBE-CONSULTANTS/cf-deploy@v0.0.2
       
       - name: Verify CF CLI
         run: cf version
