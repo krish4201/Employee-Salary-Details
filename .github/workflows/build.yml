@@ -19,10 +19,7 @@ jobs:
           node-version: 18
 
       - name: Install CF CLI
-        run: |
-          wget https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github -O cf.tgz
-          tar -xvf cf.tgz
-          mv cf /usr/local/bin
+        uses: cloudfoundry/cf-cli-action@v2
 
       - name: Login to CF
         run: |
