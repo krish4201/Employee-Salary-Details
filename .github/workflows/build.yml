@@ -31,6 +31,9 @@ jobs:
           # Install CF CLI
           sudo apt-get update
           sudo apt-get install -y cf8-cli
+          cf add-plugin-repo CF-Community https://plugins.cloudfoundry.org
+          cf install-plugin multiapps -r CF-Community
+
     
       - name: Verify CF CLI
         run: cf version
