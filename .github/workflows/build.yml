@@ -35,8 +35,6 @@ jobs:
       - name: Verify CF CLI
         run: cf version
 
-      - name: CF CLI API Endpoint
-        run: 
 
       - name: CF CLI Login
         run: |
@@ -47,6 +45,8 @@ jobs:
       - name: Verify CF Target
         run: cf target
         
+      - name: CF CLI Help
+        run: cf help -a
 
       - name: Install dependencies
         run: npm install
