@@ -18,9 +18,8 @@ jobs:
         with:
           node-version: 18
 
-      
-      - name: Install CF CLI
-        uses: cloudfoundry/cf-cli@8
+      - name: Sap BTP CF CLI Action - Build and Deploy
+        uses: CUBE-CONSULTANTS/cf-deploy@v0.0.2
       
       - name: Verify CF CLI
         run: cf version
